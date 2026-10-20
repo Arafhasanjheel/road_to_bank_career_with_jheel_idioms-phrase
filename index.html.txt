@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 30: Idioms & Phrases - Practice Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --secondary: #0f172a;
+            --accent: #f59e0b;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-sub: #64748b;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+
+        body.dark-mode {
+            --primary: #3b82f6;
+            --primary-light: #60a5fa;
+            --secondary: #f8fafc;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f1f5f9;
+            --text-sub: #94a3b8;
+            --border: #334155;
+            --shadow: 0 10px 15px -3px rgba(0,0,0,0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', 'Hind Siliguri', sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 40px;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .title-area h1 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .title-area p {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .theme-toggle {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 30px auto 0;
+            padding: 0 20px;
+            width: 100%;
+            flex: 1;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px 12px 42px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-sub);
+        }
+
+        .counter-badge {
+            background: var(--primary);
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .card-container {
+            perspective: 1000px;
+            height: 260px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .card-container.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+        }
+
+        .card-front {
+            border-top: 5px solid var(--primary);
+        }
+
+        .card-back {
+            border-top: 5px solid var(--success);
+            transform: rotateY(180deg);
+            text-align: left;
+        }
+
+        .card-number {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.85rem;
+            background: rgba(59, 130, 246, 0.1);
+            padding: 4px 10px;
+            border-radius: 10px;
+            width: fit-content;
+        }
+
+        .idiom-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 15px 0 10px;
+        }
+
+        .flip-hint {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .card-back .meaning {
+            font-size: 1rem;
+            color: var(--text-main);
+            font-weight: 600;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .card-back .example {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            line-height: 1.4;
+            font-style: italic;
+        }
+
+        .audio-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-left: 8px;
+            padding: 4px;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            padding: 20px;
+            color: var(--text-sub);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+            background: var(--card-bg);
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px 0;
+            color: var(--text-sub);
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="title-area">
+                <h1>CHAPTER 30: IDIOMS & PHRASES</h1>
+                <p>Collected & Created by Araf Hasan Jheel (SO, ICB)</p>
+            </div>
+            <div class="header-actions">
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fa-solid fa-moon"></i> <span id="theme-text">Dark Mode</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="controls">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Search idioms, Bangla meaning, or examples..." oninput="filterCards()">
+            </div>
+            <div class="counter-badge" id="cardCounter">Showing 180 Cards</div>
+        </div>
+
+        <div class="cards-grid" id="cardsGrid"></div>
+    </main>
+
+    <footer>
+        Collected & Created by Araf Hasan Jheel (SO, ICB) | Practice Portal
+    </footer>
+
+    <script>
+        const idiomsData = [
+            { id: 1, phrase: "ABC", meaning: "primary knowledge (প্রাথমিক জ্ঞান)", example: "He does not know even the ABC of music." },
+            { id: 2, phrase: "Above all", meaning: "more than anything else (সর্বোপরি)", example: "Above all, be careful of your health." },
+            { id: 3, phrase: "Above board", meaning: "beyond doubt (সন্দেহাতীতভাবে নির্দোষ)", example: "His activities are open and above board." },
+            { id: 4, phrase: "Achilles' heel", meaning: "weak point (দুর্বলতা বা ত্রুটি)", example: "Hankering for votes is the Achilles' heel of the so-called leaders." },
+            { id: 5, phrase: "After all", meaning: "in spite of everything (সব কিছু সত্ত্বেও)", example: "After all, he is a patriot." },
+            { id: 6, phrase: "All at once", meaning: "suddenly (হঠাৎ)", example: "All at once a tiger came out of the forest." },
+            { id: 7, phrase: "All on (of) a sudden", meaning: "suddenly (হঠাৎ)", example: "All on a sudden a tiger came out of the bush." },
+            { id: 8, phrase: "All but", meaning: "nearly (প্রায়)", example: "The poor villagers are all but ruined." },
+            { id: 9, phrase: "All in all", meaning: "supreme (সর্বেসর্বা)", example: "Mr. Sen is all in all in his office." },
+            { id: 10, phrase: "Apple of discord", meaning: "matter of dispute (বিবাদের বিষয়)", example: "The paternal property became an apple of discord between two brothers." },
+            { id: 11, phrase: "As if", meaning: "as it would be (যেন)", example: "He swims so beautifully as if he is the water-god." },
+            { id: 12, phrase: "As it were", meaning: "like (যেমন)", example: "The sun is, as it were, the lamp of the universe." },
+            { id: 13, phrase: "As usual", meaning: "habitually (যথারীতি)", example: "He is late as usual." },
+            { id: 14, phrase: "At a loss", meaning: "puzzled (হতবুদ্ধি, কিংকর্তব্যবিমূঢ়)", example: "He was at a loss and did not know what to do." },
+            { id: 15, phrase: "At all", meaning: "primarily / least (আদৌ)", example: "He does not know French at all." },
+            { id: 16, phrase: "At all events", meaning: "in all cases (যাই ঘটুক সব ক্ষেত্রেই)", example: "I shall stand by him at all events." },
+            { id: 17, phrase: "At a low ebb", meaning: "declining (নিম্নমুখী)", example: "His fame is at a low ebb now." },
+            { id: 18, phrase: "At arm's length", meaning: "at a distance (দূরে)", example: "Try to keep the bad boy at arm's length." },
+            { id: 19, phrase: "At a stretch", meaning: "without break (একটানা)", example: "He can run ten miles at a stretch." },
+            { id: 20, phrase: "At bay", meaning: "in a tight corner (কোণঠাসা)", example: "The tiger was at bay in the bush." },
+            { id: 21, phrase: "At one's finger ends", meaning: "ready at hand (নখদর্পণে)", example: "All these facts are at his finger ends." },
+            { id: 22, phrase: "At daggers drawn", meaning: "at enmity (খড়গহস্ত)", example: "The two brothers are now at daggers drawn." },
+            { id: 23, phrase: "At home", meaning: "skilled, comfortable (দক্ষ, আরামপ্রদ)", example: "He is at home in Mathematics. I feel at home in your house." },
+            { id: 24, phrase: "At large", meaning: "free (স্বাধীন)", example: "The anti-socials are still at large." },
+            { id: 25, phrase: "At last", meaning: "in the long run (অবশেষে)", example: "I got my missing book at last." },
+            { id: 26, phrase: "At least", meaning: "at the lowest (কমপক্ষে)", example: "At least one hundred boys will come to school today." },
+            { id: 27, phrase: "At one's wit's end", meaning: "puzzled (হতবুদ্ধি)", example: "He was at his wit's end and did not know what to do." },
+            { id: 28, phrase: "At random", meaning: "without any aim (বেপরোয়া বা এলোমেলো)", example: "He hit the ball at random." },
+            { id: 29, phrase: "At sixes and sevens", meaning: "scattered (বিশৃঙ্খল অবস্থায়)", example: "All the furniture in the room were at sixes and sevens." },
+            { id: 30, phrase: "At stake", meaning: "in danger (বিপন্ন)", example: "His life is at stake now." },
+            { id: 31, phrase: "At one's back and call", meaning: "obedient (বাধ্য)", example: "He is always at my beck and call." },
+            { id: 32, phrase: "At one's own sweet will", meaning: "according to wishes (খুশি মতো)", example: "He still does it at his own sweet will." },
+            { id: 33, phrase: "At the eleventh hour", meaning: "at the last moment (শেষ মুহূর্তে)", example: "The doctor came to the patient at the eleventh hour." },
+            { id: 34, phrase: "Bad blood", meaning: "ill feeling (মনকষাকষি)", example: "Now there is bad blood between the two brothers." },
+            { id: 35, phrase: "Bag and baggage", meaning: "with all belongings (তল্পিতল্পাসহ)", example: "He left the place bag and baggage." },
+            { id: 36, phrase: "Beat about the bush", meaning: "talk irrelevantly (কাজের কথায় না এসে বাজে কথা বলা)", example: "Please come to the point without beating about the bush." },
+            { id: 37, phrase: "Bed of roses", meaning: "comfortable condition (আরামদায়ক অবস্থা)", example: "Life is not a bed of roses." },
+            { id: 38, phrase: "Birds of a feather", meaning: "persons of similar nature (একই স্বভাবের লোক)", example: "Birds of a feather flock together." },
+            { id: 39, phrase: "Beat black and blue", meaning: "beat severely (প্রচণ্ড প্রহার করা)", example: "They beat the thief black and blue." },
+            { id: 40, phrase: "Black sheep", meaning: "person of bad character (কুলঙ্গার)", example: "He is a black sheep in his family." },
+            { id: 41, phrase: "Beggar description", meaning: "cannot be described (বর্ণনা করা যায় না)", example: "The beauty of the Taj beggars description." },
+            { id: 42, phrase: "A bolt from the blue", meaning: "something quite unexpected (বিনা মেঘে বজ্রপাত)", example: "The news of his father's death came as a bolt from the blue." },
+            { id: 43, phrase: "By all means", meaning: "in all possible ways (সর্বপ্রকারে)", example: "Try to do it by all means." },
+            { id: 44, phrase: "By and by", meaning: "soon (শীঘ্রই)", example: "He will come here by and by." },
+            { id: 45, phrase: "By the bye", meaning: "in course of talking (প্রসঙ্গক্রমে)", example: "By the bye I came to know that he was ill." },
+            { id: 46, phrase: "By chance", meaning: "by accident (দৈবাৎ)", example: "I met him on the way by chance." },
+            { id: 47, phrase: "By fits and starts", meaning: "irregularly (অনিয়মিতভাবে, মাঝে মাঝে)", example: "He works by fits and starts." },
+            { id: 48, phrase: "By no means", meaning: "in no way (কোনক্রমেই না)", example: "I shall by no means call on him." },
+            { id: 49, phrase: "By hook or by crook", meaning: "by fair means or foul (যেকোন উপায়ে)", example: "You must do this work by hook or by crook." },
+            { id: 50, phrase: "By far", meaning: "in all respects (সর্বাংশে)", example: "He is by far the best boy in the class." },
+            { id: 51, phrase: "By leaps and bounds", meaning: "very rapidly (অতি দ্রুতগতিতে)", example: "The population is increasing by leaps and bounds." },
+            { id: 52, phrase: "By and large", meaning: "mostly (প্রধানতঃ)", example: "People in our village are by and large farmers." },
+            { id: 53, phrase: "Bid fair", meaning: "possibility of prospering (ভালো কিছু আশা করা)", example: "He bids fair to be a good doctor." },
+            { id: 54, phrase: "Big gun", meaning: "a leading man (নেতৃত্বস্থানীয় ব্যক্তি)", example: "He is a big gun of our locality." },
+            { id: 55, phrase: "Bird's eye view", meaning: "a rough idea (মোটামুটি ধারণা)", example: "He took a bird's eye view of the flood-stricken area." },
+            { id: 56, phrase: "Bone of contention", meaning: "matter of dispute (বিবাদের বিষয়)", example: "The paternal property is the bone of contention." },
+            { id: 57, phrase: "Book worm", meaning: "reads books only (গ্রন্থকীট)", example: "Don't be a book worm." },
+            { id: 58, phrase: "Bosom friend", meaning: "intimate friend (অন্তরঙ্গ বন্ধু)", example: "Salil is my bosom friend." },
+            { id: 59, phrase: "Bring to light", meaning: "make open (প্রকাশ করা)", example: "At last all the facts were brought to light." },
+            { id: 60, phrase: "Bring to book", meaning: "punish (শাস্তি দেওয়া)", example: "He should be brought to book for his misconduct." },
+            { id: 61, phrase: "Build castles in air", meaning: "indulge in idle vision (আকাশ কুসুম রচনা করা)", example: "Don't idle away time building castles in the air." },
+            { id: 62, phrase: "Burning question", meaning: "matter of strong debate (তীব্র বিতর্কের বিষয়)", example: "Dowry system is the burning question of the day." },
+            { id: 63, phrase: "Breathe one's last", meaning: "die (মারা যাওয়া)", example: "The old man breathed his last on Sunday." },
+            { id: 64, phrase: "Call to mind", meaning: "remember (স্মরণ করা)", example: "I cannot call to mind your name." },
+            { id: 65, phrase: "Call in question", meaning: "doubt (সন্দেহ করা)", example: "No one can call his honesty in question." },
+            { id: 66, phrase: "Call a spade a spade", meaning: "to speak plainly (অপ্রিয় সত্য কথা বলা)", example: "I have no hesitation to call a spade a spade." },
+            { id: 67, phrase: "Carry the day", meaning: "win victory (জয়লাভ করা)", example: "Amal carried the day in the annual sports." },
+            { id: 68, phrase: "Catch red handed", meaning: "catch in the act (হাতে নাতে ধরা)", example: "The thief was caught red-handed." },
+            { id: 69, phrase: "Cats and dogs", meaning: "heavily (মুষল ধারে)", example: "It was raining cats and dogs." },
+            { id: 70, phrase: "Chip of old block", meaning: "worthy son of father (বাপকা বেটা)", example: "He is a chip of the old block." },
+            { id: 71, phrase: "Cock and bull story", meaning: "absurd story (গাঁজাখুরি গল্প)", example: "Who will believe your cock and bull story?" },
+            { id: 72, phrase: "Crying need", meaning: "urgent need (জরুরী প্রয়োজন)", example: "Mass education is the crying need of our country." },
+            { id: 73, phrase: "Crocodile tears", meaning: "pretended cry (মায়া কান্না)", example: "He shed crocodile tears at our misery." },
+            { id: 74, phrase: "Come to light", meaning: "become known (প্রকাশিত হওয়া)", example: "Their private talk has come to light at last." },
+            { id: 75, phrase: "Come off flying colours", meaning: "win a victory (জয়লাভ করা)", example: "Our team came off with flying colours." },
+            { id: 76, phrase: "Curry favour", meaning: "favour through flattery (তোসামোদ করিয়া প্রিয় হওয়া)", example: "He knows how to curry favour with officers." },
+            { id: 77, phrase: "Cut a sorry figure", meaning: "make bad results (খারাপ ফল করা)", example: "He cuts a sorry figure in the examination." },
+            { id: 78, phrase: "Cut to the quick", meaning: "be hurt (মর্মানাহত হওয়া)", example: "I was cut to the quick by his words." },
+            { id: 79, phrase: "Dead against", meaning: "bitterly against (তীব্র বিরোধী)", example: "I am dead against his proposal." },
+            { id: 80, phrase: "Dead language", meaning: "language not in use (যে ভাষা এখন আর অপ্রচলিত)", example: "Sanskrit is now a dead language." },
+            { id: 81, phrase: "Dead of night", meaning: "midnight (মধ্য রাত্রি)", example: "Robbers broke in at dead of night." },
+            { id: 82, phrase: "Die in harness", meaning: "die while in service (কর্মরত অবস্থায় মারা যাওয়া)", example: "Dr. Sen died in harness." },
+            { id: 83, phrase: "Do yeoman's service", meaning: "valuable service (বিশেষ উপকার করা)", example: "Raja Rammohan Roy did yeoman's service." },
+            { id: 84, phrase: "End in smoke", meaning: "come to nothing (ব্যর্থ হওয়া)", example: "All his plans ended in smoke." },
+            { id: 85, phrase: "Fall flat", meaning: "have no effect (ফলপ্রসূ না হওয়া)", example: "My advice fell flat on him." },
+            { id: 86, phrase: "Fight shy", meaning: "avoid (এড়িয়ে চলা)", example: "Why do you fight shy of your teacher?" },
+            { id: 87, phrase: "Fish out of water", meaning: "uneasy situation (অস্বস্তিকর অবস্থায়)", example: "He felt like a fish out of water in the village." },
+            { id: 88, phrase: "Fish in troubled water", meaning: "take unfair advantage (এলোমেলো পরিস্থিতির সুযোগ নেওয়া)", example: "He made money fishing in troubled water." },
+            { id: 89, phrase: "Far and wide", meaning: "everywhere (সর্বত্র)", example: "His fame spread far and wide." },
+            { id: 90, phrase: "Flesh and blood", meaning: "human body (রক্তমাংসের শরীর)", example: "Flesh and blood cannot bear such insults." },
+            { id: 91, phrase: "For good", meaning: "forever (চিরকালের জন্য)", example: "He left the country for good." },
+            { id: 92, phrase: "From hand to mouth", meaning: "live by hard labour (দিন এনে দিন খাওয়া)", example: "The poor man lives from hand to mouth." },
+            { id: 93, phrase: "From A to Z", meaning: "from start to finish (প্রথম হইতে শেষ পর্যন্ত)", example: "The statement is true from A to Z." },
+            { id: 94, phrase: "Gala day", meaning: "day of festivity (উৎসবের দিন)", example: "The 16th December is a gala day for us." },
+            { id: 95, phrase: "Get rid of", meaning: "be free from (মুক্তি পাওয়া)", example: "Try to get rid of that rogue." },
+            { id: 96, phrase: "Gift of the gab", meaning: "power of speech (বাকপটুতা)", example: "An advocate should have the gift of the gab." },
+            { id: 97, phrase: "Hard and fast", meaning: "rigid (বাঁধা ধরা)", example: "There is no hard and fast rule in this matter." },
+            { id: 98, phrase: "Hard nut to crack", meaning: "difficult problem (কঠিন সমস্যা)", example: "Adult education is a hard nut to crack." },
+            { id: 99, phrase: "Head and ears", meaning: "completely (সম্পূর্ণরূপে)", example: "He is over head and ears in debt." },
+            { id: 100, phrase: "Heart and soul", meaning: "with all energy (সর্বান্তঃকরণে)", example: "Try heart and soul and you will succeed." },
+            { id: 101, phrase: "Hold water", meaning: "be effective (ধোপে টেকা)", example: "This policy will not hold water here." },
+            { id: 102, phrase: "Hold good", meaning: "apply (প্রযোজ্য হওয়া)", example: "This rule will not hold good here." },
+            { id: 103, phrase: "Hue and cry", meaning: "a noise (শোরগোল)", example: "The villagers raised a hue and cry." },
+            { id: 104, phrase: "Hush money", meaning: "bribe money (ঘুষ)", example: "He offered hush money to suppress murder." },
+            { id: 105, phrase: "Household word", meaning: "familiar name (সকলের পরিচিত নাম)", example: "His name has become a household word." },
+            { id: 106, phrase: "In a fix", meaning: "difficult position (মুশকিলে পতিত)", example: "He is in a fix and does not know what to do." },
+            { id: 107, phrase: "In fine", meaning: "in conclusion (পরিশেষে)", example: "In fine he declared his plan." },
+            { id: 108, phrase: "In full swing", meaning: "in full activity (পুরোদমে)", example: "The school is now in full swing." },
+            { id: 109, phrase: "In time", meaning: "in proper time (ঠিক সময়ে)", example: "He reached the station in time." },
+            { id: 110, phrase: "In order to", meaning: "with object of (উদ্দেশ্যে)", example: "He came here in order to meet my brother." },
+            { id: 111, phrase: "In lieu of", meaning: "instead of (পরিবর্তে)", example: "Give me this pen in lieu of that." },
+            { id: 112, phrase: "In black and white", meaning: "in writing (লিখিতভাবে)", example: "Put down the statement in black and white." },
+            { id: 113, phrase: "In cold blood", meaning: "without provocation (ঠাণ্ডা মাথায়)", example: "They committed murder in cold blood." },
+            { id: 114, phrase: "In no time", meaning: "soon (শীঘ্রই)", example: "He will finish the work in no time." },
+            { id: 115, phrase: "In nick of time", meaning: "right time (ঠিক সময়ে)", example: "The team arrived in the nick of time." },
+            { id: 116, phrase: "Ins and outs", meaning: "full details (খুঁটিনাটি সব কিছু)", example: "I know the ins and outs of the matter." },
+            { id: 117, phrase: "In vogue", meaning: "in fashion (চালু / চলতি)", example: "This custom is not in vogue now." },
+            { id: 118, phrase: "In force", meaning: "in activity (বলবৎ)", example: "This law is in force now." },
+            { id: 119, phrase: "In a nutshell", meaning: "very briefly (খুব সংক্ষেপে)", example: "Tell the story in a nutshell." },
+            { id: 120, phrase: "In a hurry", meaning: "very quickly (তাড়াহুড়ার মধ্যে)", example: "Don't do the work in a hurry." },
+            { id: 121, phrase: "In the meantime", meaning: "time between (ইতিমধ্যে)", example: "Get her room ready in the meantime." },
+            { id: 122, phrase: "In one's teens", meaning: "13 to 19 years old (১০ থেকে ১৯ বছরের মধ্যে)", example: "She is yet in her teens." },
+            { id: 123, phrase: "In the long run", meaning: "ultimately (পরিশেষে)", example: "You will suffer in the long run." },
+            { id: 124, phrase: "In vain", meaning: "fruitless (বৃথা)", example: "All his attempts were in vain." },
+            { id: 125, phrase: "Irony of fate", meaning: "by bad luck (ভাগ্যের পরিহাস)", example: "He failed by irony of fate." },
+            { id: 126, phrase: "Lion's share", meaning: "major part (সিংহাংশ)", example: "He took the lion's share of the profit." },
+            { id: 127, phrase: "Lame excuse", meaning: "bad plea (বাজে অজুহাত)", example: "This lame excuse will not do." },
+            { id: 128, phrase: "Kith and kin", meaning: "near relatives (নিকট আত্মীয়)", example: "He has no relation with his kith and kin." },
+            { id: 129, phrase: "Maiden speech", meaning: "first speech (প্রথম বক্তৃতা)", example: "His maiden speech fell flat on audience." },
+            { id: 130, phrase: "Man of letters", meaning: "a scholar (পণ্ডিত লোক)", example: "Dr. Shahidullah was a man of letters." },
+            { id: 131, phrase: "Man of straw", meaning: "worthless man (অপদাৰ্থ লোক)", example: "We do not care for a man of straw." },
+            { id: 132, phrase: "Make both ends meet", meaning: "live within means (আয়ব্যয় মেলানো)", example: "I cannot make both ends meet." },
+            { id: 133, phrase: "Moot point", meaning: "undecided matter (অমীমাংসিত বিষয়)", example: "Dowry is still a moot point." },
+            { id: 134, phrase: "Nip in the bud", meaning: "destroy at initial (অঙ্কুরে বিনষ্ট করা)", example: "All his hopes were nipped in the bud." },
+            { id: 135, phrase: "Null and void", meaning: "invalid (বাতিল)", example: "The deed is now null and void." },
+            { id: 136, phrase: "Now and then", meaning: "occasionally (মাঝে মাঝে)", example: "He comes here now and then." },
+            { id: 137, phrase: "Of course", meaning: "certainly (অবশ্যই)", example: "Of course, you know what that means." },
+            { id: 138, phrase: "On the contrary", meaning: "just opposite (বিপরীত পক্ষে)", example: "I do not hate him, on the contrary I love him." },
+            { id: 139, phrase: "On the wane", meaning: "declining (হ্রাসমান)", example: "His fame is on the wane now." },
+            { id: 140, phrase: "On the whole", meaning: "generally speaking (মোটের উপর)", example: "On the whole, his conduct is good." },
+            { id: 141, phrase: "On spur of moment", meaning: "under impulse (মুহূর্তের উত্তেজনায়)", example: "He did it on the spur of the moment." },
+            { id: 142, phrase: "Out of date", meaning: "out of fashion (অচলিত)", example: "This fashion is now out of date." },
+            { id: 143, phrase: "Out of the wood", meaning: "free from danger (বিপদমুক্ত)", example: "He is not yet out of the wood." },
+            { id: 144, phrase: "Out of doors", meaning: "outside (বাহিরে)", example: "It is rather cold out of doors." },
+            { id: 145, phrase: "Out of sorts", meaning: "not well (ঈষৎ অসুস্থ)", example: "He is out of sorts today." },
+            { id: 146, phrase: "Out of order", meaning: "defective (বিকল)", example: "This machine is out of order." },
+            { id: 147, phrase: "Out of temper", meaning: "angry (ক্ষুব্ধ)", example: "He is out of temper now." },
+            { id: 148, phrase: "Part and parcel", meaning: "integral part (অবিভাজ্য অংশ)", example: "Discipline is part and parcel of administration." },
+            { id: 149, phrase: "Pros and cons", meaning: "details / arguments (খুঁটিনাটি / ভালো-মন্দ)", example: "Consider the pros and cons of the system." },
+            { id: 150, phrase: "Rank and file", meaning: "common men (সাধারণ লোক)", example: "Pay attention to the rank and file." },
+            { id: 151, phrase: "Red letter day", meaning: "memorable day (স্মরণীয় দিন)", example: "16th December is a red letter day." },
+            { id: 152, phrase: "Red tape", meaning: "official delay (লাল ফিতার বাঁধন)", example: "Red tapism causes delay in work." },
+            { id: 153, phrase: "Read between lines", meaning: "understand hidden meaning (তাৎপর্য বোঝা)", example: "Try to read between the lines." },
+            { id: 154, phrase: "Round the clock", meaning: "24 hours (সমস্ত দিন-রাত)", example: "He is working round the clock." },
+            { id: 155, phrase: "Set free", meaning: "liberate (মুক্ত করা)", example: "The prisoners were set free." },
+            { id: 156, phrase: "Slow coach", meaning: "lazy person (অলস প্রকৃতির লোক)", example: "Don't expect much from a slow coach." },
+            { id: 157, phrase: "Slip of the pen", meaning: "slight writing error (লেখার সামান্য ভুল)", example: "This mistake is due to a slip of the pen." },
+            { id: 158, phrase: "Slip of the tongue", meaning: "speaking error (বলার সামান্য ভুল)", example: "This is just a slip of the tongue." },
+            { id: 159, phrase: "Square meal", meaning: "full meal (পেট ভরা আহার)", example: "He is too poor to have a square meal." },
+            { id: 160, phrase: "Steer clear of", meaning: "avoid (এড়িয়ে চলা)", example: "You must steer clear of evil company." },
+            { id: 161, phrase: "Stone's throw", meaning: "short distance (অতি নিকটে)", example: "Our school is at a stone's throw from home." },
+            { id: 162, phrase: "Take to heart", meaning: "feel deeply (মর্মানাহত হওয়া)", example: "He took the remark to heart." },
+            { id: 163, phrase: "Take to one's heels", meaning: "run away (ছুটিয়া পালানো)", example: "The thief took to his heels seeing police." },
+            { id: 164, phrase: "Three R's", meaning: "elementary education (প্রাথমিক শিক্ষা)", example: "Many people have not learnt the three R's." },
+            { id: 165, phrase: "To and fro", meaning: "hither and thither (এদিক-ওদিক)", example: "The man is walking to and fro." },
+            { id: 166, phrase: "Take one to task", meaning: "rebuke (তিরস্কার করা)", example: "He was taken to task for negligence." },
+            { id: 167, phrase: "Tooth and nail", meaning: "strongly (তীব্রভাবে)", example: "He fought tooth and nail against enemy." },
+            { id: 168, phrase: "Through thick and thin", meaning: "through all difficulties (সকল বিপদের মধ্য দিয়ে)", example: "She supported him through thick and thin." },
+            { id: 169, phrase: "To the backbone", meaning: "to the core (হারে হারে)", example: "The boy is wicked to the backbone." },
+            { id: 170, phrase: "To the contrary", meaning: "against statement (বক্তব্যের বিপক্ষে)", example: "He said nothing to the contrary." },
+            { id: 171, phrase: "To the letter", meaning: "in all details (অক্ষরে অক্ষরে)", example: "He followed my advice to the letter." },
+            { id: 172, phrase: "Turn over a new leaf", meaning: "begin a new phase (নতুন জীবন শুরু করা)", example: "After failure he turned over a new leaf." },
+            { id: 173, phrase: "Turn a deaf ear to", meaning: "pay no attention (মনোযোগ না দেওয়া)", example: "He turned a deaf ear to my proposal." },
+            { id: 174, phrase: "Turn down", meaning: "refuse (প্রত্যাখ্যান করা)", example: "He turned down my request." },
+            { id: 175, phrase: "Up and doing", meaning: "active (উদ্যোগী)", example: "Be up and doing to succeed in life." },
+            { id: 176, phrase: "Ups and downs", meaning: "rise and fall (উত্থান-পতন)", example: "There are ups and downs in life." },
+            { id: 177, phrase: "White elephant", meaning: "costly useless thing (ব্যয়বহুল নিষ্ফল কাজ)", example: "The project proved to be a white elephant." },
+            { id: 178, phrase: "Weal and woe", meaning: "joy and sorrow (সুখ-দুঃখ)", example: "Human life is full of weal and woe." },
+            { id: 179, phrase: "Wild goose chase", meaning: "useless pursuit (পণ্ডশ্রম)", example: "Do not waste time in a wild goose chase." },
+            { id: 180, phrase: "Widow's mite", meaning: "small contribution (দরিদ্রের ক্ষুদ্র দান)", example: "A widow's mite is no less valuable." }
+        ];
+
+        function renderCards(data) {
+            const grid = document.getElementById('cardsGrid');
+            const counter = document.getElementById('cardCounter');
+            grid.innerHTML = '';
+            
+            counter.innerText = `Showing ${data.length} Cards`;
+
+            if (data.length === 0) {
+                grid.innerHTML = '<div class="no-results">No idioms found matching your search.</div>';
+                return;
+            }
+
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card-container';
+                card.onclick = (e) => {
+                    if (!e.target.classList.contains('audio-btn') && !e.target.parentElement.classList.contains('audio-btn')) {
+                        card.classList.toggle('flipped');
+                    }
+                };
+
+                card.innerHTML = `
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="card-number">#${item.id}</div>
+                            <div>
+                                <div class="idiom-title">
+                                    ${item.phrase}
+                                    <button class="audio-btn" onclick="speakText('${item.phrase.replace(/'/g, "\\'")}')" title="Listen">
+                                        <i class="fa-solid fa-volume-high"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flip-hint">
+                                <i class="fa-solid fa-rotate"></i> Tap card to see meaning
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div>
+                                <div class="card-number" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">Answer #${item.id}</div>
+                                <div class="meaning" style="margin-top: 15px;">
+                                    <strong>Meaning:</strong> ${item.meaning}
+                                </div>
+                                <div class="example">
+                                    <strong>Example:</strong> ${item.example}
+                                    <button class="audio-btn" onclick="speakText('${item.example.replace(/'/g, "\\'")}')" title="Listen">
+                                        <i class="fa-solid fa-volume-high"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flip-hint" style="color: var(--success);">
+                                <i class="fa-solid fa-rotate"></i> Tap card to flip back
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterCards() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = idiomsData.filter(item => 
+                item.phrase.toLowerCase().includes(query) ||
+                item.meaning.toLowerCase().includes(query) ||
+                item.example.toLowerCase().includes(query)
+            );
+            renderCards(filtered);
+        }
+
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const themeText = document.getElementById('theme-text');
+            const icon = document.querySelector('.theme-toggle i');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                themeText.innerText = 'Light Mode';
+                icon.className = 'fa-solid fa-sun';
+            } else {
+                themeText.innerText = 'Dark Mode';
+                icon.className = 'fa-solid fa-moon';
+            }
+        }
+
+        // Initial rendering
+        renderCards(idiomsData);
+    </script>
+</body>
+</html>
